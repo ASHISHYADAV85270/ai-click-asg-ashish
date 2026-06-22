@@ -120,6 +120,20 @@ async def get_mentions(request: MentionsRequest):
     )
 
 
+@app.get("/debug")
+async def debug():
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        )
+        tables = await cursor.fetchall()
+
+    return {
+        "db_path": DB_PATH,
+        "tables": tables
+    }
+
+
 @app.post("/mentions/trends", response_model=TrendsResponse)
 async def get_trends(request: TrendsRequest):
 

@@ -2,9 +2,10 @@ import {
     MentionsResponse,
 } from "@/lib/types";
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getMentions(payload: any) {
+    console.log("API URL:", API_URL);
     const response = await fetch(`${API_URL}/mentions`, {
         method: "POST",
         headers: {
