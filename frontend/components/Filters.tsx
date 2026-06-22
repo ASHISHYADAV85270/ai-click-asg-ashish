@@ -25,14 +25,20 @@ export default function Filters({
 }: FiltersProps) {
     return (
         <div className="mb-6 rounded-xl border bg-white p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-lg font-semibold">
-                    Filters
-                </h2>
+            <div className="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 className="text-xl font-semibold text-slate-900">
+                        Filters
+                    </h2>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                        Refine mentions by model, sentiment, and date range
+                    </p>
+                </div>
 
                 <button
                     onClick={onClear}
-                    className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-100"
+                    className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-600 hover:cursor-pointer"
                 >
                     Clear Filters
                 </button>
@@ -40,16 +46,15 @@ export default function Filters({
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <div>
-                    <label className="mb-2 block text-sm font-medium">
+                    <label className="mb-2 block text-sm font-medium text-slate-700">
                         Model
                     </label>
 
+
                     <select
                         value={model}
-                        onChange={(e) =>
-                            onModelChange(e.target.value)
-                        }
-                        className="w-full rounded-lg border p-2"
+                        onChange={(e) => onModelChange(e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     >
                         <option value="">
                             All Models
@@ -81,7 +86,7 @@ export default function Filters({
                                 e.target.value
                             )
                         }
-                        className="w-full rounded-lg border p-2"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     >
                         <option value="">
                             All Sentiments
@@ -106,12 +111,8 @@ export default function Filters({
                     <input
                         type="date"
                         value={dateFrom}
-                        onChange={(e) =>
-                            onDateFromChange(
-                                e.target.value
-                            )
-                        }
-                        className="w-full rounded-lg border p-2"
+                        onChange={(e) => onDateFromChange(e.target.value)}
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     />
                 </div>
 
@@ -128,7 +129,7 @@ export default function Filters({
                                 e.target.value
                             )
                         }
-                        className="w-full rounded-lg border p-2"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     />
                 </div>
             </div>

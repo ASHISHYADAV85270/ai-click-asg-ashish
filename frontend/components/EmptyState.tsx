@@ -22,7 +22,7 @@ export default function EmptyState({
 
                 <button
                     onClick={onClearFilters}
-                    className="mt-4 rounded-lg bg-black px-4 py-2 text-white hover:bg-gray-800"
+                    className="mt-4 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-600 hover:cursor-pointer"
                 >
                     Clear Filters
                 </button>
