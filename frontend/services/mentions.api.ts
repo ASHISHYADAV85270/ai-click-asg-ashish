@@ -1,6 +1,5 @@
 import {
     MentionsResponse,
-    TrendsResponse,
 } from "@/lib/types";
 
 const API_URL = "http://localhost:8000";

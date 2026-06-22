@@ -10,6 +10,9 @@ interface FiltersProps {
     onDateToChange: (value: string) => void;
 
     onClear: () => void;
+
+    searchQuery: string;
+    onSearchQueryChange: (value: string) => void;
 }
 
 export default function Filters({
@@ -22,6 +25,8 @@ export default function Filters({
     onDateFromChange,
     onDateToChange,
     onClear,
+    searchQuery,
+    onSearchQueryChange,
 }: FiltersProps) {
     return (
         <div className="mb-6 rounded-xl border bg-white p-5 shadow-sm">
@@ -44,7 +49,22 @@ export default function Filters({
                 </button>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-slate-700">
+                        Search Query
+                    </label>
+
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        placeholder="Search mentions..."
+                        onChange={(e) =>
+                            onSearchQueryChange(e.target.value)
+                        }
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    />
+                </div>
                 <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">
                         Model

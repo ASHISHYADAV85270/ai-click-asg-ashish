@@ -42,7 +42,8 @@ export default function Dashboard() {
 
   const perPage = 7;
   const [total, setTotal] = useState(0);
-
+  const [searchQuery, setSearchQuery] =
+    useState<string>("");
   const [model, setModel] = useState("");
   const [sentiment, setSentiment] = useState("");
   const [dateFrom, setDateFrom] = useState("");
@@ -66,14 +67,19 @@ export default function Dashboard() {
   useEffect(() => {
     if (isInvalidDateRange) return;
     fetchData();
-    fetchTrendData();
   }, [
     page,
     model,
     sentiment,
     dateFrom,
     dateTo,
+    searchQuery,
   ]);
+
+  useEffect(() => {
+    if (isInvalidDateRange) return;
+    fetchTrendData();
+  }, [dateFrom, dateTo]);
 
   useEffect(() => {
     setPage(1);
@@ -82,6 +88,7 @@ export default function Dashboard() {
     sentiment,
     dateFrom,
     dateTo,
+    searchQuery,
   ]);
   const fetchData = async () => {
     try {
@@ -91,15 +98,18 @@ export default function Dashboard() {
         page,
         per_page: perPage,
         filters: {
+          ...(searchQuery && {
+              query: searchQuery,
+          }),
           ...(model && { model }),
           ...(sentiment && { sentiment }),
           ...(dateFrom && {
-            date_from: dateFrom,
+              date_from: dateFrom,
           }),
           ...(dateTo && {
-            date_to: dateTo,
+              date_to: dateTo,
           }),
-        },
+      },
       });
       setMentions(data.data);
       setTotal(data.total);
@@ -135,11 +145,14 @@ export default function Dashboard() {
           sentiment={sentiment}
           dateFrom={dateFrom}
           dateTo={dateTo}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
           onModelChange={setModel}
           onSentimentChange={setSentiment}
           onDateFromChange={setDateFrom}
           onDateToChange={setDateTo}
           onClear={() => {
+            setSearchQuery("");
             setModel("");
             setSentiment("");
             setDateFrom("");

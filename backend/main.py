@@ -51,6 +51,14 @@ async def get_mentions(request: MentionsRequest):
     params = []
 
     if request.filters:
+        if request.filters and request.filters.query:
+            search_value = f"%{request.filters.query}%"
+
+            query += " AND query_text LIKE ?"
+            count_query += " AND query_text LIKE ?"
+
+            params.append(search_value)
+
         if request.filters.model:
             query += " AND model = ?"
             count_query += " AND model = ?"

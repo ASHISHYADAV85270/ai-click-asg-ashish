@@ -1,6 +1,7 @@
 // Types matching the backend API contract
 
 export interface MentionFilters {
+  query?: string;
   model?: "chatgpt" | "claude" | "gemini" | "perplexity";
   sentiment?: "positive" | "neutral" | "negative";
   date_from?: string; // YYYY-MM-DD

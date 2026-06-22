@@ -6,10 +6,11 @@ from datetime import datetime
 # Request models
 
 class MentionFilters(BaseModel):
-    model: Optional[str] = None  # chatgpt, claude, gemini, perplexity
-    sentiment: Optional[str] = None  # positive, neutral, negative
-    date_from: Optional[str] = None  # YYYY-MM-DD
-    date_to: Optional[str] = None  # YYYY-MM-DD
+    query: Optional[str] = None
+    model: Optional[str] = None
+    sentiment: Optional[str] = None
+    date_from: Optional[str] = None
+    date_to: Optional[str] = None
 
 
 class MentionsRequest(BaseModel):
