@@ -15,6 +15,7 @@ interface FiltersProps {
     onSearchQueryChange: (value: string) => void;
 }
 
+import { Search } from "lucide-react";
 export default function Filters({
     model,
     sentiment,
@@ -54,16 +55,21 @@ export default function Filters({
                     <label className="mb-2 block text-sm font-medium text-slate-700">
                         Search Query
                     </label>
+                    <div className="relative">
+                        <Search
+                            className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                        />
 
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        placeholder="Search mentions..."
-                        onChange={(e) =>
-                            onSearchQueryChange(e.target.value)
-                        }
-                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                    />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            placeholder="Search mentions..."
+                            onChange={(e) =>
+                                onSearchQueryChange(e.target.value)
+                            }
+                            className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 "
+                        />
+                    </div>
                 </div>
                 <div>
                     <label className="mb-2 block text-sm font-medium text-slate-700">
