@@ -49,9 +49,22 @@ export default function Dashboard() {
   const [dateTo, setDateTo] = useState("");
   const [trendData, setTrendData] = useState<
     TrendPoint[]
->([]);
+  >([]);
+
+  const hasActiveFilters =
+    !!model ||
+    !!sentiment ||
+    !!dateFrom ||
+    !!dateTo;
+
+  const isInvalidDateRange =
+    dateFrom &&
+    dateTo &&
+    new Date(dateFrom) >
+    new Date(dateTo);
 
   useEffect(() => {
+    if (isInvalidDateRange) return;
     fetchData();
     fetchTrendData();
   }, [
@@ -97,13 +110,13 @@ export default function Dashboard() {
 
   const fetchTrendData = async () => {
     const response = await getTrends({
-        date_from: dateFrom || undefined,
-        date_to: dateTo || undefined,
-        group_by: "day",
+      date_from: dateFrom || undefined,
+      date_to: dateTo || undefined,
+      group_by: "day",
     });
 
     setTrendData(response.data);
-};
+  };
 
   const totalPages = Math.ceil(
     total / perPage
@@ -137,7 +150,13 @@ export default function Dashboard() {
         {loading ? (
           <LoadingState />
         ) : mentions.length === 0 ? (
-          <EmptyState />
+          <EmptyState hasFilters={hasActiveFilters} onClearFilters={() => {
+            setModel("");
+            setSentiment("");
+            setDateFrom("");
+            setDateTo("");
+            setPage(1);
+          }} />
         ) : (
           <>
             <MentionsTable mentions={mentions} />
