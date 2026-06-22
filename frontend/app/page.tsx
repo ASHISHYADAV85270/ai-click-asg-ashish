@@ -52,6 +52,17 @@ export default function Dashboard() {
     TrendPoint[]
   >([]);
 
+  const [debouncedQuery, setDebouncedQuery] =
+    useState(searchQuery);
+
+useEffect(() => {
+    const timer = setTimeout(() => {
+        setDebouncedQuery(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timer);
+}, [searchQuery]);
+
   const hasActiveFilters =
     !!model ||
     !!sentiment ||
@@ -73,7 +84,7 @@ export default function Dashboard() {
     sentiment,
     dateFrom,
     dateTo,
-    searchQuery,
+    debouncedQuery,
   ]);
 
   useEffect(() => {
@@ -88,7 +99,7 @@ export default function Dashboard() {
     sentiment,
     dateFrom,
     dateTo,
-    searchQuery,
+    debouncedQuery,
   ]);
   const fetchData = async () => {
     try {
@@ -98,7 +109,7 @@ export default function Dashboard() {
         page,
         per_page: perPage,
         filters: {
-          ...(searchQuery && {
+          ...(debouncedQuery && {
               query: searchQuery,
           }),
           ...(model && { model }),
