@@ -3,6 +3,8 @@ import aiosqlite
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from seed_db import seed
+
 from models import (
     MentionsRequest,
     MentionsResponse,
@@ -23,6 +25,16 @@ app.add_middleware(
 )
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "mentions.db")
+
+
+@app.on_event("startup")
+async def startup():
+    try:
+        seed()
+        print("Database seeded successfully")
+    except Exception as e:
+        print(f"Seed failed: {e}")
+
 
 
 @app.get("/health")
