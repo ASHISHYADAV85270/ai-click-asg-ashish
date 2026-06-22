@@ -132,6 +132,7 @@ async def get_mentions(request: MentionsRequest):
     )
 
 
+# For Debugging If the DB has been initiated On render or not 
 @app.get("/debug")
 async def debug():
     async with aiosqlite.connect(DB_PATH) as db:
