@@ -5,7 +5,6 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getMentions(payload: any) {
-    console.log("API URL:", API_URL);
     const response = await fetch(`${API_URL}/mentions`, {
         method: "POST",
         headers: {
@@ -26,8 +25,7 @@ export async function getTrends(payload: {
     date_to?: string;
     group_by: "day" | "week";
 }) {
-    const response = await fetch(
-        "http://localhost:8000/mentions/trends",
+    const response = await fetch(`${API_URL}/mentions/trends`,
         {
             method: "POST",
             headers: {
