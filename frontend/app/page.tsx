@@ -33,6 +33,7 @@ import { Mention, TrendPoint } from "@/lib/types";
 import { getMentions, getTrends } from "@/services/mentions.api";
 import Filters from "@/components/Filters";
 import TrendChart from "@/components/TrendChart";
+import TrendFilter from "@/components/TrendFilter";
 
 export default function Dashboard() {
   const [mentions, setMentions] = useState<Mention[]>([]);
@@ -55,13 +56,17 @@ export default function Dashboard() {
   const [debouncedQuery, setDebouncedQuery] =
     useState(searchQuery);
 
-useEffect(() => {
+  const [groupBy, setGroupBy] = useState<"day" | "week">(
+    "day"
+  );
+
+  useEffect(() => {
     const timer = setTimeout(() => {
-        setDebouncedQuery(searchQuery);
+      setDebouncedQuery(searchQuery);
     }, 500);
 
     return () => clearTimeout(timer);
-}, [searchQuery]);
+  }, [searchQuery]);
 
   const hasActiveFilters =
     !!model ||
@@ -90,7 +95,7 @@ useEffect(() => {
   useEffect(() => {
     if (isInvalidDateRange) return;
     fetchTrendData();
-  }, [dateFrom, dateTo]);
+  }, [dateFrom, dateTo, groupBy]);
 
   useEffect(() => {
     setPage(1);
@@ -110,17 +115,17 @@ useEffect(() => {
         per_page: perPage,
         filters: {
           ...(debouncedQuery && {
-              query: searchQuery,
+            query: searchQuery,
           }),
           ...(model && { model }),
           ...(sentiment && { sentiment }),
           ...(dateFrom && {
-              date_from: dateFrom,
+            date_from: dateFrom,
           }),
           ...(dateTo && {
-              date_to: dateTo,
+            date_to: dateTo,
           }),
-      },
+        },
       });
       setMentions(data.data);
       setTotal(data.total);
@@ -133,8 +138,8 @@ useEffect(() => {
     const response = await getTrends({
       date_from: dateFrom || undefined,
       date_to: dateTo || undefined,
-      group_by: "day",
-    });
+      group_by: groupBy,
+  });
 
     setTrendData(response.data);
   };
@@ -149,8 +154,13 @@ useEffect(() => {
         <h1 className="mb-8 text-4xl font-bold">
           Brand Mentions Dashboard
         </h1>
+        <div className="mb-6">
+          <div className="mb-4">
+            <TrendFilter groupBy={groupBy} setGroupBy={setGroupBy} />
+          </div>
+          {trendData.length > 0 && <TrendChart data={trendData} />}
+        </div>
 
-        <TrendChart data={trendData} />
         <Filters
           model={model}
           sentiment={sentiment}
