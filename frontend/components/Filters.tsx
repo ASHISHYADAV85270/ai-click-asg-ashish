@@ -16,6 +16,7 @@ interface FiltersProps {
 }
 
 import { Search } from "lucide-react";
+import ActiveFilters from "./ActiveFilters";
 export default function Filters({
     model,
     sentiment,
@@ -33,10 +34,38 @@ export default function Filters({
         <div className="mb-6 rounded-xl border bg-white p-5 shadow-sm">
             <div className="mb-6 flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-semibold text-slate-900">
-                        Filters
-                    </h2>
+                    <div className="flex items-center gap-3">
+                        <h2 className="text-xl font-semibold text-slate-900">
+                            Filters
+                        </h2>
 
+                        <span
+                            className="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700"
+                        >
+                            {
+                                [
+                                    model,
+                                    sentiment,
+                                    dateFrom,
+                                    dateTo,
+                                    searchQuery,
+                                ].filter(Boolean).length
+                            } Active
+                        </span>
+                    </div>
+
+                    <ActiveFilters
+                        model={model}
+                        sentiment={sentiment}
+                        dateFrom={dateFrom}
+                        dateTo={dateTo}
+                        searchQuery={searchQuery}
+                        onRemoveModel={() => onModelChange("")}
+                        onRemoveSentiment={() => onSentimentChange("")}
+                        onRemoveDateFrom={() => onDateFromChange("")}
+                        onRemoveDateTo={() => onDateToChange("")}
+                        onRemoveSearch={() => onSearchQueryChange("")}
+                    />
                     <p className="mt-1 text-sm text-slate-500">
                         Refine mentions by model, sentiment, and date range
                     </p>
