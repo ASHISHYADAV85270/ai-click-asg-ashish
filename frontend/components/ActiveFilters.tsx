@@ -57,6 +57,7 @@ export default function ActiveFilters({
                         Active Filters
                     </span>
 
+
                     <span className="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-semibold text-blue-700">
                         {[
                             searchQuery,
