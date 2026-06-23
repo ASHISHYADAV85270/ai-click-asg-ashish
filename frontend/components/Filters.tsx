@@ -96,7 +96,7 @@ export default function Filters({
                             onChange={(e) =>
                                 onSearchQueryChange(e.target.value)
                             }
-                            className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 "
+                            className=" w-full rounded-xl border border-slate-300  bg-white py-3 pl-10 pr-4 text-slate-800 placeholder:text-slate-500 placeholder:font-medium   shadow-sm   transition-all   outline-none   hover:border-blue-400   focus:border-blue-500   focus:ring-4   focus:ring-blue-100   "
                         />
                     </div>
                 </div>
@@ -112,7 +112,7 @@ export default function Filters({
                         className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     >
                         <option value="">
-                            All Models
+                            Select Models
                         </option>
                         <option value="chatgpt">
                             ChatGPT
@@ -144,7 +144,7 @@ export default function Filters({
                         className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 shadow-sm transition-all outline-none hover:border-blue-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     >
                         <option value="">
-                            All Sentiments
+                            Select Sentiments
                         </option>
                         <option value="positive">
                             Positive

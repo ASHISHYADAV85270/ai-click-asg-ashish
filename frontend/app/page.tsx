@@ -303,6 +303,7 @@ export default function Dashboard() {
             setDateFrom("");
             setDateTo("");
             setPage(1);
+            setSearchQuery("");
           }} />
         ) : (
           <>
