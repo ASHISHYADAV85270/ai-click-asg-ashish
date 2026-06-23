@@ -21,6 +21,7 @@ app.add_middleware(
         allow_origins=[
         "http://localhost:3000",
         "https://ai-click-asg-ashish-frontend.vercel.app",
+        "https://ai-click-asg-ashish-frontend-o8z6g9y0a.vercel.app/"
     ],
     allow_credentials=True,
     allow_methods=["*"],
