@@ -13,8 +13,14 @@ import {
     Area,
 } from "recharts";
 
+import TrendFilter from "./TrendFilter";
+
 interface TrendChartProps {
     data: TrendPoint[];
+    groupBy: "day" | "week";
+    setGroupBy: (
+        groupBy: "day" | "week"
+    ) => void;
 }
 
 function CustomTooltip({
@@ -51,6 +57,8 @@ function CustomTooltip({
 
 export default function TrendChart({
     data,
+    groupBy,
+    setGroupBy,
 }: TrendChartProps) {
     const totalMentions = data.reduce(
         (sum, item) => sum + item.total,
@@ -76,16 +84,25 @@ export default function TrendChart({
 
     return (
         <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="mb-6">
-                <h2 className="text-lg font-semibold text-slate-900">
-                    Mention Trends
-                </h2>
+            <div className="flex justify-between">
+                <div className="mb-6 flex flex-col">
+                    <h2 className="text-lg font-semibold text-slate-900">
+                        Mention Trends
+                    </h2>
 
-                <p className="text-sm text-slate-500">
-                    Total mentions vs brand mentions over
-                    time
-                </p>
+                    <p className="text-sm text-slate-500">
+                        Total mentions vs brand mentions over
+                        time
+                    </p>
+                </div>
+                <div>
+                    <TrendFilter
+                        groupBy={groupBy}
+                        setGroupBy={setGroupBy}
+                    />
+                </div>
             </div>
+
 
             <div className="mb-6 grid gap-4 md:grid-cols-3">
                 <div className="rounded-xl bg-slate-50 p-4">

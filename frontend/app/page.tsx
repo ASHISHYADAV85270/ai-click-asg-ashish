@@ -282,10 +282,7 @@ export default function Dashboard() {
 
 
         <div className="mb-6 mt-4">
-          <div className="mb-4">
-            <TrendFilter groupBy={groupBy} setGroupBy={setGroupBy} />
-          </div>
-          {trendData.length > 0 && <TrendChart data={trendData} />}
+          {trendData.length > 0 && <TrendChart data={trendData} groupBy={groupBy} setGroupBy={setGroupBy} />}
         </div>
 
 

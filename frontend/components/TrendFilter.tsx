@@ -1,29 +1,38 @@
-import React from 'react'
+import React from "react";
+import { CalendarDays, CalendarRange } from "lucide-react";
 
-const TrendFilter = ({ groupBy, setGroupBy }: { groupBy: "day" | "week", setGroupBy: (groupBy: "day" | "week") => void }) => {
+interface TrendFilterProps {
+    groupBy: "day" | "week";
+    setGroupBy: (groupBy: "day" | "week") => void;
+}
+
+export default function TrendFilter({
+    groupBy,
+    setGroupBy,
+}: TrendFilterProps) {
     return (
-        <div className="flex rounded-xl border border-slate-300 overflow-hidden">
+        <div className="inline-flex rounded-xl border border-slate-200 bg-slate-100 p-1 shadow-sm">
             <button
                 onClick={() => setGroupBy("day")}
-                className={`flex-1 px-4 py-2 text-sm font-medium transition ${groupBy === "day"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-slate-600 hover:bg-slate-50"
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${groupBy === "day"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
                     }`}
             >
+                <CalendarDays className="h-4 w-4" />
                 Daily
             </button>
 
             <button
                 onClick={() => setGroupBy("week")}
-                className={`flex-1 px-4 py-2 text-sm font-medium transition ${groupBy === "week"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-slate-600 hover:bg-slate-50"
+                className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${groupBy === "week"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
                     }`}
             >
+                <CalendarRange className="h-4 w-4" />
                 Weekly
             </button>
         </div>
-    )
+    );
 }
-
-export default TrendFilter
