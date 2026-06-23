@@ -312,6 +312,8 @@ export default function Dashboard() {
             <Pagination
               page={page}
               totalPages={totalPages}
+              total={total}
+              perPage={perPage}
               onPageChange={setPage}
             />
           </>
