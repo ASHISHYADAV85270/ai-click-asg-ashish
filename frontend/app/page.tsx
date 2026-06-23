@@ -23,6 +23,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 import LoadingState from "@/components/LoadingState";
 import EmptyState from "@/components/EmptyState";
@@ -35,39 +39,99 @@ import { getMentions, getTrends } from "@/services/mentions.api";
 import Filters from "@/components/Filters";
 import TrendChart from "@/components/TrendChart";
 import TrendFilter from "@/components/TrendFilter";
+import { useDebounce } from "@/components/hooks/useDebounce";
 
 export default function Dashboard() {
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+
   const [mentions, setMentions] = useState<Mention[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [page, setPage] = useState(1);
 
   const perPage = 10;
   const [total, setTotal] = useState(0);
-  const [searchQuery, setSearchQuery] =
-    useState<string>("");
-  const [model, setModel] = useState("");
-  const [sentiment, setSentiment] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [trendData, setTrendData] = useState<
-    TrendPoint[]
-  >([]);
 
-  const [debouncedQuery, setDebouncedQuery] =
-    useState(searchQuery);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
-  const [groupBy, setGroupBy] = useState<"day" | "week">(
-    "day"
-  );
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("query") || "");
+
+  const [model, setModel] = useState(searchParams.get("model") || "");
+
+  const [sentiment, setSentiment] = useState(searchParams.get("sentiment") || "");
+
+  const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "");
+
+  const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "");
+
+
+  const [trendData, setTrendData] = useState<TrendPoint[]>([]);
+
+  const debouncedQuery = useDebounce(searchQuery);
+
+  const [groupBy, setGroupBy] =
+    useState<"day" | "week">(
+      (
+        searchParams.get(
+          "groupBy"
+        ) as "day" | "week"
+      ) || "day"
+    );
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(searchQuery);
-    }, 500);
+    const params =
+      new URLSearchParams();
 
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+    if (debouncedQuery) {
+      params.set("query", debouncedQuery);
+    }
+
+    if (model)
+      params.set("model", model);
+
+    if (sentiment)
+      params.set(
+        "sentiment",
+        sentiment
+      );
+
+    if (dateFrom)
+      params.set(
+        "dateFrom",
+        dateFrom
+      );
+
+    if (dateTo)
+      params.set("dateTo", dateTo);
+
+    if (groupBy !== "day")
+      params.set(
+        "groupBy",
+        groupBy
+      );
+
+    if (page > 1)
+      params.set(
+        "page",
+        page.toString()
+      );
+
+    router.replace(
+      `?${params.toString()}`,
+      { scroll: false }
+    );
+  }, [
+    debouncedQuery,
+    model,
+    sentiment,
+    dateFrom,
+    dateTo,
+    page,
+    groupBy,
+    router,
+  ]);
 
   const hasActiveFilters =
     !!model ||
