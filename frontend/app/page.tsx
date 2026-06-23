@@ -40,6 +40,9 @@ import Filters from "@/components/Filters";
 import TrendChart from "@/components/TrendChart";
 import TrendFilter from "@/components/TrendFilter";
 import { useDebounce } from "@/components/hooks/useDebounce";
+import KpiSkeleton from "@/components/KpiSkeleton";
+import TrendSkeleton from "@/components/TrendSkeleton";
+import TableSkeleton from "@/components/TableSkeleton";
 
 export default function Dashboard() {
 
@@ -246,13 +249,13 @@ export default function Dashboard() {
             across ChatGPT, Claude, Gemini, and Perplexity.
           </p>
         </div>
-
-        <KpiCards
-          totalMentions={totalMentions}
-          mentionedCount={mentionedCount}
-          avgPosition={avgPosition}
-          positiveCount={positiveCount}
-        />
+        {loading ? <KpiSkeleton /> :
+          <KpiCards
+            totalMentions={totalMentions}
+            mentionedCount={mentionedCount}
+            avgPosition={avgPosition}
+            positiveCount={positiveCount}
+          />}
         <br />
         <br />
 
@@ -286,9 +289,16 @@ export default function Dashboard() {
         </div>
 
 
-
         {loading ? (
-          <LoadingState />
+          <>
+            <div className="mt-6">
+              <TrendSkeleton />
+            </div>
+
+            <div className="mt-6">
+              <TableSkeleton />
+            </div>
+          </>
         ) : mentions.length === 0 ? (
           <EmptyState hasFilters={hasActiveFilters} onClearFilters={() => {
             setModel("");
