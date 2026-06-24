@@ -57,10 +57,7 @@ export default function KpiCards({
                     <Info className="h-4 w-4 cursor-help text-slate-400 transition-colors group-hover:text-blue-600" />
 
                     <div className="pointer-events-none absolute left-1/2 top-full z-50 mt-2 hidden w-80 -translate-x-1/2 rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-600 shadow-xl group-hover:block">
-                        Metrics are currently calculated from the records displayed
-                        in the table. In a production environment, these would be
-                        calculated across the entire filtered dataset using a
-                        dedicated analytics endpoint.
+                        Metrics reflect the entire filtered dataset, not just the records currently displayed in the table.
                     </div>
                 </div>
             </div>
