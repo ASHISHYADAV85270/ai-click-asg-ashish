@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import Optional
 from datetime import datetime
+from typing import Literal
 
 
 # Request models
@@ -14,15 +15,17 @@ class MentionFilters(BaseModel):
 
 
 class MentionsRequest(BaseModel):
-    page: int = 1
-    per_page: int = 25
-    filters: Optional[MentionFilters] = None
+    page: int = Field(default=1,ge=1)
+
+    per_page: int = Field(default=10,ge=1,le=100)
+
+    filters: MentionFilters | None = None
 
 
 class TrendsRequest(BaseModel):
     date_from: Optional[str] = None
     date_to: Optional[str] = None
-    group_by: str = "day"  # "day" or "week"
+    group_by: Literal["day", "week"] = "day"
 
 
 # Response models
