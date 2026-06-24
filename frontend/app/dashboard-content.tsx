@@ -226,7 +226,6 @@ export default function DashboardContent() {
 
     const fetchTrendData = async () => {
         try {
-            setLoading(true);
             const response = await getTrends({
                 query: debouncedQuery || undefined,
                 model: model || undefined,
@@ -237,8 +236,7 @@ export default function DashboardContent() {
             });
 
             setTrendData(response.data);
-        } finally{
-            setLoading(false);
+        } catch(error){
         }
 
     };
