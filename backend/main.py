@@ -31,11 +31,18 @@ app.add_middleware(
 DB_PATH = os.path.join(os.path.dirname(__file__), "mentions.db")
 
 
+# Initialize seed data only for first-time setup.
+# Previously the database was reseeded on every restart, which increased startup time.
+# We now seed only when the SQLite database file is missing, making startup idempotent
+# while preserving existing data between application restarts.
 @app.on_event("startup")
 async def startup():
     try:
-        seed()
-        print("Database seeded successfully")
+        if not os.path.exists(DB_PATH):
+            seed()
+            print("Database seeded successfully")
+        else:
+            print("Database already exists. Skipping seed.")
     except Exception as e:
         print(f"Seed failed: {e}")
 
