@@ -64,9 +64,9 @@ export default function DashboardContent() {
 
     const [sentiment, setSentiment] = useState(searchParams.get("sentiment") || "");
 
-    const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "");
+    const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "2025-01-01");
 
-    const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "");
+    const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "2025-02-20");
 
 
     const [trendData, setTrendData] = useState<TrendPoint[]>([]);
