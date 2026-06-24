@@ -39,7 +39,7 @@ import {
     getMentions,
     getTrends,
     getStats,
-  } from "@/services/mentions.api";
+} from "@/services/mentions.api";
 import Filters from "@/components/Filters";
 import TrendChart from "@/components/TrendChart";
 import { useDebounce } from "@/components/hooks/useDebounce";
@@ -85,7 +85,7 @@ export default function DashboardContent() {
             ) || "day"
         );
 
-    
+
     const [stats, setStats] = useState<StatsResponse | null>(null);
 
     useEffect(() => {
@@ -165,26 +165,26 @@ export default function DashboardContent() {
         debouncedQuery,
     ]);
 
-    useEffect(() => { fetchTrendData()}, [
+    useEffect(() => { fetchTrendData() }, [
         debouncedQuery,
         model,
         sentiment,
         dateFrom,
         dateTo,
         groupBy,
-      ]);
+    ]);
 
     useEffect(() => {
         if (isInvalidDateRange) return;
-      
+
         fetchStats();
-      }, [
+    }, [
         model,
         sentiment,
         dateFrom,
         dateTo,
         debouncedQuery,
-      ]);
+    ]);
 
 
     useEffect(() => {
@@ -225,29 +225,41 @@ export default function DashboardContent() {
     };
 
     const fetchTrendData = async () => {
-        const response = await getTrends({
-            query: debouncedQuery || undefined,
-            model: model || undefined,
-            sentiment: sentiment || undefined,
-            date_from: dateFrom || undefined,
-            date_to: dateTo || undefined,
-            group_by: groupBy,
+        try {
+            setLoading(true);
+            const response = await getTrends({
+                query: debouncedQuery || undefined,
+                model: model || undefined,
+                sentiment: sentiment || undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+                group_by: groupBy,
             });
 
-        setTrendData(response.data);
+            setTrendData(response.data);
+        } finally{
+            setLoading(false);
+        }
+
     };
 
     const fetchStats = async () => {
-        const response = await getStats({
-          query: debouncedQuery || undefined,
-          model: model || undefined,
-          sentiment: sentiment || undefined,
-          date_from: dateFrom || undefined,
-          date_to: dateTo || undefined,
-        });
-      
-        setStats(response);
-      };
+        try {
+            setLoading(true);
+            const response = await getStats({
+                query: debouncedQuery || undefined,
+                model: model || undefined,
+                sentiment: sentiment || undefined,
+                date_from: dateFrom || undefined,
+                date_to: dateTo || undefined,
+            });
+
+            setStats(response);
+        } finally {
+            setLoading(false);
+        }
+
+    };
 
     const totalPages = Math.ceil(
         total / perPage
