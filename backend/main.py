@@ -1,10 +1,9 @@
 import os
 import time
+import logging
 import aiosqlite
-
-from fastapi import FastAPI
+from fastapi import FastAPI , HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
 from seed_db import seed
 
 from models import (
@@ -16,6 +15,10 @@ from models import (
     TrendPoint,
 )
 
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = FastAPI(title="Brand Mentions API")
 
 @app.middleware("http")
@@ -26,7 +29,7 @@ async def log_request_time(request, call_next):
 
     duration = round((time.time() - start) * 1000,2)
 
-    print(f"{request.method} {request.url.path} - {duration}ms")
+    logger.info(f"{request.method} {request.url.path} - {duration}ms")
 
     return response
 
@@ -54,11 +57,11 @@ async def startup():
     try:
         if not os.path.exists(DB_PATH):
             seed()
-            print("Database seeded successfully")
+            logger.info("Database seeded successfully")
         else:
-            print("Database already exists. Skipping seed.")
+            logger.info("Database already exists. Skipping seed.")
     except Exception as e:
-        print(f"Seed failed: {e}")
+        logger.error(f"Seed failed: {e}")
 
 
 
