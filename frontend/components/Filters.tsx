@@ -30,6 +30,15 @@ export default function Filters({
     searchQuery,
     onSearchQueryChange,
 }: FiltersProps) {
+
+    const isEmpty = [
+        model,
+        sentiment,
+        dateFrom,
+        dateTo,
+        searchQuery,
+    ].every(value => !value);
+
     return (
         <div className="mb-6 rounded-xl border bg-white p-5 shadow-sm">
             <div className="mb-6 flex items-center justify-between">
@@ -73,7 +82,8 @@ export default function Filters({
 
                 <button
                     onClick={onClear}
-                    className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-red-300 hover:bg-red-50 hover:text-red-600 hover:cursor-pointer"
+                    disabled={isEmpty}
+                    className={`rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-all  hover:border-red-300 hover:bg-red-50 hover:text-red-600  ${isEmpty ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                 >
                     Clear Filters
                 </button>
