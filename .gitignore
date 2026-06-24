@@ -9,3 +9,4 @@ __pycache__/
 .DS_Store
 SCORECARD.md
 forum-post-draft.md
+frontend/.env.local
