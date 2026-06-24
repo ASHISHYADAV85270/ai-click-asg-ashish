@@ -2,6 +2,7 @@ import os
 import time
 import logging
 import aiosqlite
+from dotenv import load_dotenv
 from fastapi import FastAPI , HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from seed_db import seed
@@ -15,7 +16,7 @@ from models import (
     TrendPoint,
 )
 
-
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -33,13 +34,15 @@ async def log_request_time(request, call_next):
 
     return response
 
+
+ALLOWED_ORIGINS = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:3000"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-        allow_origins=[
-        "http://localhost:3000",
-        "https://ai-click-asg-ashish-frontend.vercel.app",
-        "https://ai-click-asg-ashish-frontend-o8z6g9y0a.vercel.app/"
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
