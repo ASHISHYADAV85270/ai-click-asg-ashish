@@ -29,7 +29,6 @@ import {
     useSearchParams,
 } from "next/navigation";
 
-import LoadingState from "@/components/LoadingState";
 import EmptyState from "@/components/EmptyState";
 import Pagination from "@/components/Pagination";
 import MentionsTable from "@/components/MentionsTable";
