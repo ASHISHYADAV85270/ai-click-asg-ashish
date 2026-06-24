@@ -1,5 +1,7 @@
 import os
+import time
 import aiosqlite
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,6 +17,18 @@ from models import (
 )
 
 app = FastAPI(title="Brand Mentions API")
+
+@app.middleware("http")
+async def log_request_time(request, call_next):
+    start = time.time()
+
+    response = await call_next(request)
+
+    duration = round((time.time() - start) * 1000,2)
+
+    print(f"{request.method} {request.url.path} - {duration}ms")
+
+    return response
 
 app.add_middleware(
     CORSMiddleware,
