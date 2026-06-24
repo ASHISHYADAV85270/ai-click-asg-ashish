@@ -1,4 +1,14 @@
-fastapi==0.115.0
-uvicorn==0.30.0
 aiosqlite==0.20.0
+annotated-types==0.7.0
+anyio==4.14.0
+click==8.4.1
+fastapi==0.115.0
+h11==0.16.0
+idna==3.18
 pydantic==2.9.0
+pydantic_core==2.23.2
+python-dotenv==1.2.2
+starlette==0.38.6
+typing_extensions==4.15.0
+tzdata==2026.2
+uvicorn==0.30.0
