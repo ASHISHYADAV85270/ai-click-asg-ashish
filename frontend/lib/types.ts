@@ -47,3 +47,10 @@ export interface TrendPoint {
 export interface TrendsResponse {
   data: TrendPoint[];
 }
+
+export interface StatsResponse {
+  total_mentions: number;
+  mentioned_count: number;
+  positive_count: number;
+  avg_position: number;
+}

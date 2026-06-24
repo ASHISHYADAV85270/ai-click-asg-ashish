@@ -103,39 +103,6 @@ export default function TrendChart({
                 </div>
             </div>
 
-
-            <div className="mb-6 grid gap-4 md:grid-cols-3">
-                <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-sm text-slate-500">
-                        Total Mentions
-                    </p>
-
-                    <p className="mt-1 text-2xl font-bold">
-                        {totalMentions}
-                    </p>
-                </div>
-
-                <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-sm text-slate-500">
-                        Mention Rate
-                    </p>
-
-                    <p className="mt-1 text-2xl font-bold text-green-600">
-                        {mentionRate}%
-                    </p>
-                </div>
-
-                <div className="rounded-xl bg-slate-50 p-4">
-                    <p className="text-sm text-slate-500">
-                        Peak Period
-                    </p>
-
-                    <p className="mt-1 text-lg font-bold">
-                        {peakDay?.date ?? "-"}
-                    </p>
-                </div>
-            </div>
-
             <ResponsiveContainer
                 width="100%"
                 height={350}

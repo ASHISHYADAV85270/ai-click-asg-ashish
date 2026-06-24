@@ -35,8 +35,12 @@ import Pagination from "@/components/Pagination";
 import MentionsTable from "@/components/MentionsTable";
 import KpiCards from "@/components/dashboard/KpiCards";
 
-import { Mention, TrendPoint } from "@/lib/types";
-import { getMentions, getTrends } from "@/services/mentions.api";
+import { Mention, StatsResponse, TrendPoint } from "@/lib/types";
+import {
+    getMentions,
+    getTrends,
+    getStats,
+  } from "@/services/mentions.api";
 import Filters from "@/components/Filters";
 import TrendChart from "@/components/TrendChart";
 import { useDebounce } from "@/components/hooks/useDebounce";
@@ -81,6 +85,9 @@ export default function DashboardContent() {
                 ) as "day" | "week"
             ) || "day"
         );
+
+    
+    const [stats, setStats] = useState<StatsResponse | null>(null);
 
     useEffect(() => {
         const params =
@@ -159,10 +166,27 @@ export default function DashboardContent() {
         debouncedQuery,
     ]);
 
+    useEffect(() => { fetchTrendData()}, [
+        debouncedQuery,
+        model,
+        sentiment,
+        dateFrom,
+        dateTo,
+        groupBy,
+      ]);
+
     useEffect(() => {
         if (isInvalidDateRange) return;
-        fetchTrendData();
-    }, [dateFrom, dateTo, groupBy]);
+      
+        fetchStats();
+      }, [
+        model,
+        sentiment,
+        dateFrom,
+        dateTo,
+        debouncedQuery,
+      ]);
+
 
     useEffect(() => {
         setPage(1);
@@ -203,38 +227,42 @@ export default function DashboardContent() {
 
     const fetchTrendData = async () => {
         const response = await getTrends({
+            query: debouncedQuery || undefined,
+            model: model || undefined,
+            sentiment: sentiment || undefined,
             date_from: dateFrom || undefined,
             date_to: dateTo || undefined,
             group_by: groupBy,
-        });
+            });
 
         setTrendData(response.data);
     };
+
+    const fetchStats = async () => {
+        const response = await getStats({
+          query: debouncedQuery || undefined,
+          model: model || undefined,
+          sentiment: sentiment || undefined,
+          date_from: dateFrom || undefined,
+          date_to: dateTo || undefined,
+        });
+      
+        setStats(response);
+      };
 
     const totalPages = Math.ceil(
         total / perPage
     );
 
 
-    const totalMentions = mentions.length;
+    const totalMentions = stats?.total_mentions;
 
-    const mentionedCount = mentions.filter(
-        (m) => m.mentioned
-    ).length;
+    const mentionedCount = stats?.mentioned_count
 
-    const positiveCount = mentions.filter(
-        (m) => m.sentiment === "positive"
-    ).length;
+    const positiveCount = stats?.positive_count
 
-    const positions = mentions
-        .filter((m) => m.position !== null)
-        .map((m) => m.position!);
 
-    const avgPosition =
-        positions.length > 0
-            ? positions.reduce((a, b) => a + b, 0) /
-            positions.length
-            : 0;
+    const avgPosition =  stats?.avg_position
     return (
         <main className="min-h-screen bg-gray-50 p-8">
             <div className="mx-auto max-w-7xl">
@@ -250,10 +278,10 @@ export default function DashboardContent() {
                 </div>
                 {loading ? <KpiSkeleton /> :
                     <KpiCards
-                        totalMentions={totalMentions}
-                        mentionedCount={mentionedCount}
-                        avgPosition={avgPosition}
-                        positiveCount={positiveCount}
+                        totalMentions={totalMentions ?? 0}
+                        mentionedCount={mentionedCount ?? 0}
+                        avgPosition={avgPosition ?? 0}
+                        positiveCount={positiveCount ?? 0}
                     />}
                 <br />
                 <br />

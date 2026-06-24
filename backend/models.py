@@ -23,12 +23,14 @@ class MentionsRequest(BaseModel):
 
 
 class TrendsRequest(BaseModel):
+    query: Optional[str] = None
+    model: Optional[str] = None
+    sentiment: Optional[str] = None
     date_from: Optional[str] = None
     date_to: Optional[str] = None
     group_by: Literal["day", "week"] = "day"
 
 
-# Response models
 
 class Mention(BaseModel):
     id: str
@@ -56,3 +58,10 @@ class TrendPoint(BaseModel):
 
 class TrendsResponse(BaseModel):
     data: list[TrendPoint]
+
+
+class StatsResponse(BaseModel):
+    total_mentions: int
+    mentioned_count: int
+    positive_count: int
+    avg_position: float

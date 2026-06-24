@@ -8,9 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from seed_db import seed
 
 from models import (
+    MentionFilters,
     MentionsRequest,
     MentionsResponse,
     Mention,
+    StatsResponse,
     TrendsRequest,
     TrendsResponse,
     TrendPoint,
@@ -205,6 +207,18 @@ async def get_trends(request: TrendsRequest):
         query += " AND date(created_at) <= date(?)"
         params.append(request.date_to)
 
+    if request.query:
+        query += " AND query_text LIKE ?"
+        params.append(f"%{request.query}%")
+
+    if request.model:
+        query += " AND model = ?"
+        params.append(request.model)
+
+    if request.sentiment:
+        query += " AND sentiment = ?"
+        params.append(request.sentiment)
+
     query += f"""
         GROUP BY {date_expr}
         ORDER BY {date_expr}
@@ -225,4 +239,53 @@ async def get_trends(request: TrendsRequest):
             )
             for row in rows
         ]
+    )
+
+
+@app.post("/mentions/stats", response_model=StatsResponse)
+async def get_stats(filters: MentionFilters | None = None):
+    query = """
+    SELECT
+        COUNT(*) as total_mentions,
+        SUM(CASE WHEN mentioned = 1 THEN 1 ELSE 0 END) as mentioned_count,
+        SUM(CASE WHEN sentiment = 'positive' THEN 1 ELSE 0 END) as positive_count,
+        AVG(position) as avg_position
+    FROM mentions
+    WHERE 1=1
+    """
+
+    params = []
+
+    if filters:
+        if filters.query:
+            query += " AND query_text LIKE ?"
+            params.append(f"%{filters.query}%")
+
+        if filters.model:
+            query += " AND model = ?"
+            params.append(filters.model)
+
+        if filters.sentiment:
+            query += " AND sentiment = ?"
+            params.append(filters.sentiment)
+
+        if filters.date_from:
+            query += " AND date(created_at) >= date(?)"
+            params.append(filters.date_from)
+
+        if filters.date_to:
+            query += " AND date(created_at) <= date(?)"
+            params.append(filters.date_to)
+
+    async with aiosqlite.connect(DB_PATH) as db:
+        db.row_factory = aiosqlite.Row
+
+        cursor = await db.execute(query, params)
+        row = await cursor.fetchone()
+
+    return StatsResponse(
+        total_mentions=row["total_mentions"] or 0,
+        mentioned_count=row["mentioned_count"] or 0,
+        positive_count=row["positive_count"] or 0,
+        avg_position=round(row["avg_position"] or 0, 2),
     )
